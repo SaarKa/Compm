@@ -93,8 +93,8 @@
                     (<CNTRL>
                       (<if>)
                       (<BEXP>
-                        (<not,!>)
                         (<BEXP>
+                          (<not,!>)
                           (<BEXP>
                             (<EXP>
                               (<NUM>
@@ -108,18 +108,18 @@
                               )
                             )
                           )
-                          (<or,||>)
-                          (<BEXP>
-                            (<EXP>
-                              (<NUM>
-                                (<integernum,2>)
-                              )
+                        )
+                        (<or,||>)
+                        (<BEXP>
+                          (<EXP>
+                            (<NUM>
+                              (<integernum,2>)
                             )
-                            (<relop,==>)
-                            (<EXP>
-                              (<NUM>
-                                (<integernum,2>)
-                              )
+                          )
+                          (<relop,==>)
+                          (<EXP>
+                            (<NUM>
+                              (<integernum,2>)
                             )
                           )
                         )

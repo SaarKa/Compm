@@ -27,7 +27,6 @@
 	%token IF
 	%precedence THEN
 	%precedence ELSE
-	%right NOT
 	%left ','
 	%right ASSIGN
 	%left OR
@@ -35,6 +34,7 @@
 	%left RELOP
 	%left ADDOP
 	%left MULOP
+	%right NOT
 	%left ';'
 	%left '('
 	%left ')'

@@ -112,13 +112,13 @@ DO (271) 34 37
 IF (272) 35 36
 THEN (273) 35 36
 ELSE (274) 35
-NOT (275) 41
-ASSIGN (276) 32
-OR (277) 39
-AND (278) 40
-RELOP (279) 42
-ADDOP (280) 45
-MULOP (281) 46
+ASSIGN (275) 32
+OR (276) 39
+AND (277) 40
+RELOP (278) 42
+ADDOP (279) 45
+MULOP (280) 46
+NOT (281) 41
 
 
 Nonterminals, with rules where they appear
@@ -976,9 +976,6 @@ State 79
    39 bexp: bexp . OR bexp
    40     | bexp . AND bexp
    41     | NOT bexp .
-
-    OR   shift, and go to state 83
-    AND  shift, and go to state 84
 
     $default  reduce using rule 41 (bexp)
 

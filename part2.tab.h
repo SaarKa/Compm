@@ -62,13 +62,13 @@ extern int yydebug;
     IF = 272,
     THEN = 273,
     ELSE = 274,
-    NOT = 275,
-    ASSIGN = 276,
-    OR = 277,
-    AND = 278,
-    RELOP = 279,
-    ADDOP = 280,
-    MULOP = 281
+    ASSIGN = 275,
+    OR = 276,
+    AND = 277,
+    RELOP = 278,
+    ADDOP = 279,
+    MULOP = 280,
+    NOT = 281
   };
 #endif
 

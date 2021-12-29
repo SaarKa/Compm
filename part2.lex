@@ -13,7 +13,7 @@ id				[a-zA-Z]({digit}|[a-zA-Z]|_)*
 integernum		{digit}+(\.0+)?
 realnum			{digit}+\.[1-9]{digit}
 str				\"(([^"\n\\])|(\\[nt"]))*\"
-symbol			[(){},;\/:]
+symbol			[(){},;:]
 relop			==|<>|<|<=|>|>=
 addop			\+|\-
 mulop			\*|\/
