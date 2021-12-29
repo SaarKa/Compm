@@ -7,7 +7,7 @@ lex.yy.c: part2.lex part2_helpers.h part2_helpers.c
 	flex part2.lex
 
 part2.tab.c part2.tab.h: part2.y
-	bison -d part2.y
+	bison -d -v part2.y
 
 # Utility targets
 .PHONY: clean test

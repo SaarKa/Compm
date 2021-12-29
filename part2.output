@@ -1,0 +1,1406 @@
+Grammar
+
+    0 $accept: program $end
+
+    1 program: fdefs
+
+    2 fdefs: fdefs func_api blk
+    3      | fdefs func_api ';'
+    4      | %empty
+
+    5 func_api: type ID '(' func_args ')'
+
+    6 func_args: func_arglist
+    7          | %empty
+
+    8 func_arglist: func_arglist ',' dcl
+    9             | dcl
+
+   10 blk: '{' stlist '}'
+
+   11 dcl: ID ':' type
+   12    | ID ',' dcl
+
+   13 type: INT
+   14     | FLOAT
+   15     | VOID
+
+   16 stlist: stlist stmt
+   17       | %empty
+
+   18 stmt: dcl ';'
+   19     | assn
+   20     | exp ';'
+   21     | cntrl
+   22     | read
+   23     | write
+   24     | return
+   25     | blk
+   26     | BREAK ';'
+
+   27 return: RETURN exp ';'
+   28       | RETURN ';'
+
+   29 write: WRITE '(' exp ')' ';'
+   30      | WRITE '(' STR ')' ';'
+
+   31 read: READ '(' lval ')' ';'
+
+   32 assn: lval ASSIGN exp ';'
+
+   33 lval: ID
+
+   34 fullwhile: FULL_WHILE bexp DO stmt
+
+   35 cntrl: IF bexp THEN stmt ELSE stmt
+   36      | IF bexp THEN stmt
+   37      | WHILE bexp DO stmt
+   38      | fullwhile
+
+   39 bexp: bexp OR bexp
+   40     | bexp AND bexp
+   41     | NOT bexp
+   42     | exp RELOP exp
+   43     | '(' bexp ')'
+   44     | fullwhile
+
+   45 exp: exp ADDOP exp
+   46    | exp MULOP exp
+   47    | '(' exp ')'
+   48    | '(' type ')' exp
+   49    | ID
+   50    | num
+   51    | call
+
+   52 num: INTEGERNUM
+   53    | REALNUM
+
+   54 call: ID '(' call_args ')'
+
+   55 call_args: call_arglist
+   56          | %empty
+
+   57 call_arglist: call_arglist ',' exp
+   58             | exp
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'(' (40) 5 29 30 31 43 47 48 54
+')' (41) 5 29 30 31 43 47 48 54
+',' (44) 8 12 57
+':' (58) 11
+';' (59) 3 18 20 26 27 28 29 30 31 32
+'{' (123) 10
+'}' (125) 10
+error (256)
+ID (258) 5 11 12 33 49 54
+INT (259) 13
+FLOAT (260) 14
+VOID (261) 15
+INTEGERNUM (262) 52
+REALNUM (263) 53
+BREAK (264) 26
+RETURN (265) 27 28
+WRITE (266) 29 30
+STR (267) 30
+READ (268) 31
+FULL_WHILE (269) 34
+WHILE (270) 37
+DO (271) 34 37
+IF (272) 35 36
+THEN (273) 35 36
+ELSE (274) 35
+ASSIGN (275) 32
+NOT (276) 41
+OR (277) 39
+AND (278) 40
+RELOP (279) 42
+ADDOP (280) 45
+MULOP (281) 46
+
+
+Nonterminals, with rules where they appear
+
+$accept (34)
+    on left: 0
+program (35)
+    on left: 1, on right: 0
+fdefs (36)
+    on left: 2 3 4, on right: 1 2 3
+func_api (37)
+    on left: 5, on right: 2 3
+func_args (38)
+    on left: 6 7, on right: 5
+func_arglist (39)
+    on left: 8 9, on right: 6 8
+blk (40)
+    on left: 10, on right: 2 25
+dcl (41)
+    on left: 11 12, on right: 8 9 12 18
+type (42)
+    on left: 13 14 15, on right: 5 11 48
+stlist (43)
+    on left: 16 17, on right: 10 16
+stmt (44)
+    on left: 18 19 20 21 22 23 24 25 26, on right: 16 34 35 36 37
+return (45)
+    on left: 27 28, on right: 24
+write (46)
+    on left: 29 30, on right: 23
+read (47)
+    on left: 31, on right: 22
+assn (48)
+    on left: 32, on right: 19
+lval (49)
+    on left: 33, on right: 31 32
+fullwhile (50)
+    on left: 34, on right: 38 44
+cntrl (51)
+    on left: 35 36 37 38, on right: 21
+bexp (52)
+    on left: 39 40 41 42 43 44, on right: 34 35 36 37 39 40 41 43
+exp (53)
+    on left: 45 46 47 48 49 50 51, on right: 20 27 29 32 42 45 46 47
+    48 57 58
+num (54)
+    on left: 52 53, on right: 50
+call (55)
+    on left: 54, on right: 51
+call_args (56)
+    on left: 55 56, on right: 54
+call_arglist (57)
+    on left: 57 58, on right: 55 57
+
+
+State 0
+
+    0 $accept: . program $end
+
+    $default  reduce using rule 4 (fdefs)
+
+    program  go to state 1
+    fdefs    go to state 2
+
+
+State 1
+
+    0 $accept: program . $end
+
+    $end  shift, and go to state 3
+
+
+State 2
+
+    1 program: fdefs .
+    2 fdefs: fdefs . func_api blk
+    3      | fdefs . func_api ';'
+
+    INT    shift, and go to state 4
+    FLOAT  shift, and go to state 5
+    VOID   shift, and go to state 6
+
+    $default  reduce using rule 1 (program)
+
+    func_api  go to state 7
+    type      go to state 8
+
+
+State 3
+
+    0 $accept: program $end .
+
+    $default  accept
+
+
+State 4
+
+   13 type: INT .
+
+    $default  reduce using rule 13 (type)
+
+
+State 5
+
+   14 type: FLOAT .
+
+    $default  reduce using rule 14 (type)
+
+
+State 6
+
+   15 type: VOID .
+
+    $default  reduce using rule 15 (type)
+
+
+State 7
+
+    2 fdefs: fdefs func_api . blk
+    3      | fdefs func_api . ';'
+
+    ';'  shift, and go to state 9
+    '{'  shift, and go to state 10
+
+    blk  go to state 11
+
+
+State 8
+
+    5 func_api: type . ID '(' func_args ')'
+
+    ID  shift, and go to state 12
+
+
+State 9
+
+    3 fdefs: fdefs func_api ';' .
+
+    $default  reduce using rule 3 (fdefs)
+
+
+State 10
+
+   10 blk: '{' . stlist '}'
+
+    $default  reduce using rule 17 (stlist)
+
+    stlist  go to state 13
+
+
+State 11
+
+    2 fdefs: fdefs func_api blk .
+
+    $default  reduce using rule 2 (fdefs)
+
+
+State 12
+
+    5 func_api: type ID . '(' func_args ')'
+
+    '('  shift, and go to state 14
+
+
+State 13
+
+   10 blk: '{' stlist . '}'
+   16 stlist: stlist . stmt
+
+    ID          shift, and go to state 15
+    INTEGERNUM  shift, and go to state 16
+    REALNUM     shift, and go to state 17
+    BREAK       shift, and go to state 18
+    RETURN      shift, and go to state 19
+    WRITE       shift, and go to state 20
+    READ        shift, and go to state 21
+    FULL_WHILE  shift, and go to state 22
+    WHILE       shift, and go to state 23
+    IF          shift, and go to state 24
+    '('         shift, and go to state 25
+    '{'         shift, and go to state 10
+    '}'         shift, and go to state 26
+
+    blk        go to state 27
+    dcl        go to state 28
+    stmt       go to state 29
+    return     go to state 30
+    write      go to state 31
+    read       go to state 32
+    assn       go to state 33
+    lval       go to state 34
+    fullwhile  go to state 35
+    cntrl      go to state 36
+    exp        go to state 37
+    num        go to state 38
+    call       go to state 39
+
+
+State 14
+
+    5 func_api: type ID '(' . func_args ')'
+
+    ID  shift, and go to state 40
+
+    $default  reduce using rule 7 (func_args)
+
+    func_args     go to state 41
+    func_arglist  go to state 42
+    dcl           go to state 43
+
+
+State 15
+
+   11 dcl: ID . ':' type
+   12    | ID . ',' dcl
+   33 lval: ID .
+   49 exp: ID .
+   54 call: ID . '(' call_args ')'
+
+    '('  shift, and go to state 44
+    ','  shift, and go to state 45
+    ':'  shift, and go to state 46
+
+    ASSIGN    reduce using rule 33 (lval)
+    $default  reduce using rule 49 (exp)
+
+
+State 16
+
+   52 num: INTEGERNUM .
+
+    $default  reduce using rule 52 (num)
+
+
+State 17
+
+   53 num: REALNUM .
+
+    $default  reduce using rule 53 (num)
+
+
+State 18
+
+   26 stmt: BREAK . ';'
+
+    ';'  shift, and go to state 47
+
+
+State 19
+
+   27 return: RETURN . exp ';'
+   28       | RETURN . ';'
+
+    ID          shift, and go to state 48
+    INTEGERNUM  shift, and go to state 16
+    REALNUM     shift, and go to state 17
+    ';'         shift, and go to state 49
+    '('         shift, and go to state 25
+
+    exp   go to state 50
+    num   go to state 38
+    call  go to state 39
+
+
+State 20
+
+   29 write: WRITE . '(' exp ')' ';'
+   30      | WRITE . '(' STR ')' ';'
+
+    '('  shift, and go to state 51
+
+
+State 21
+
+   31 read: READ . '(' lval ')' ';'
+
+    '('  shift, and go to state 52
+
+
+State 22
+
+   34 fullwhile: FULL_WHILE . bexp DO stmt
+
+    ID          shift, and go to state 48
+    INTEGERNUM  shift, and go to state 16
+    REALNUM     shift, and go to state 17
+    FULL_WHILE  shift, and go to state 22
+    NOT         shift, and go to state 53
+    '('         shift, and go to state 54
+
+    fullwhile  go to state 55
+    bexp       go to state 56
+    exp        go to state 57
+    num        go to state 38
+    call       go to state 39
+
+
+State 23
+
+   37 cntrl: WHILE . bexp DO stmt
+
+    ID          shift, and go to state 48
+    INTEGERNUM  shift, and go to state 16
+    REALNUM     shift, and go to state 17
+    FULL_WHILE  shift, and go to state 22
+    NOT         shift, and go to state 53
+    '('         shift, and go to state 54
+
+    fullwhile  go to state 55
+    bexp       go to state 58
+    exp        go to state 57
+    num        go to state 38
+    call       go to state 39
+
+
+State 24
+
+   35 cntrl: IF . bexp THEN stmt ELSE stmt
+   36      | IF . bexp THEN stmt
+
+    ID          shift, and go to state 48
+    INTEGERNUM  shift, and go to state 16
+    REALNUM     shift, and go to state 17
+    FULL_WHILE  shift, and go to state 22
+    NOT         shift, and go to state 53
+    '('         shift, and go to state 54
+
+    fullwhile  go to state 55
+    bexp       go to state 59
+    exp        go to state 57
+    num        go to state 38
+    call       go to state 39
+
+
+State 25
+
+   47 exp: '(' . exp ')'
+   48    | '(' . type ')' exp
+
+    ID          shift, and go to state 48
+    INT         shift, and go to state 4
+    FLOAT       shift, and go to state 5
+    VOID        shift, and go to state 6
+    INTEGERNUM  shift, and go to state 16
+    REALNUM     shift, and go to state 17
+    '('         shift, and go to state 25
+
+    type  go to state 60
+    exp   go to state 61
+    num   go to state 38
+    call  go to state 39
+
+
+State 26
+
+   10 blk: '{' stlist '}' .
+
+    $default  reduce using rule 10 (blk)
+
+
+State 27
+
+   25 stmt: blk .
+
+    $default  reduce using rule 25 (stmt)
+
+
+State 28
+
+   18 stmt: dcl . ';'
+
+    ';'  shift, and go to state 62
+
+
+State 29
+
+   16 stlist: stlist stmt .
+
+    $default  reduce using rule 16 (stlist)
+
+
+State 30
+
+   24 stmt: return .
+
+    $default  reduce using rule 24 (stmt)
+
+
+State 31
+
+   23 stmt: write .
+
+    $default  reduce using rule 23 (stmt)
+
+
+State 32
+
+   22 stmt: read .
+
+    $default  reduce using rule 22 (stmt)
+
+
+State 33
+
+   19 stmt: assn .
+
+    $default  reduce using rule 19 (stmt)
+
+
+State 34
+
+   32 assn: lval . ASSIGN exp ';'
+
+    ASSIGN  shift, and go to state 63
+
+
+State 35
+
+   38 cntrl: fullwhile .
+
+    $default  reduce using rule 38 (cntrl)
+
+
+State 36
+
+   21 stmt: cntrl .
+
+    $default  reduce using rule 21 (stmt)
+
+
+State 37
+
+   20 stmt: exp . ';'
+   45 exp: exp . ADDOP exp
+   46    | exp . MULOP exp
+
+    ADDOP  shift, and go to state 64
+    MULOP  shift, and go to state 65
+    ';'    shift, and go to state 66
+
+
+State 38
+
+   50 exp: num .
+
+    $default  reduce using rule 50 (exp)
+
+
+State 39
+
+   51 exp: call .
+
+    $default  reduce using rule 51 (exp)
+
+
+State 40
+
+   11 dcl: ID . ':' type
+   12    | ID . ',' dcl
+
+    ','  shift, and go to state 45
+    ':'  shift, and go to state 46
+
+
+State 41
+
+    5 func_api: type ID '(' func_args . ')'
+
+    ')'  shift, and go to state 67
+
+
+State 42
+
+    6 func_args: func_arglist .
+    8 func_arglist: func_arglist . ',' dcl
+
+    ','  shift, and go to state 68
+
+    $default  reduce using rule 6 (func_args)
+
+
+State 43
+
+    9 func_arglist: dcl .
+
+    $default  reduce using rule 9 (func_arglist)
+
+
+State 44
+
+   54 call: ID '(' . call_args ')'
+
+    ID          shift, and go to state 48
+    INTEGERNUM  shift, and go to state 16
+    REALNUM     shift, and go to state 17
+    '('         shift, and go to state 25
+
+    $default  reduce using rule 56 (call_args)
+
+    exp           go to state 69
+    num           go to state 38
+    call          go to state 39
+    call_args     go to state 70
+    call_arglist  go to state 71
+
+
+State 45
+
+   12 dcl: ID ',' . dcl
+
+    ID  shift, and go to state 40
+
+    dcl  go to state 72
+
+
+State 46
+
+   11 dcl: ID ':' . type
+
+    INT    shift, and go to state 4
+    FLOAT  shift, and go to state 5
+    VOID   shift, and go to state 6
+
+    type  go to state 73
+
+
+State 47
+
+   26 stmt: BREAK ';' .
+
+    $default  reduce using rule 26 (stmt)
+
+
+State 48
+
+   49 exp: ID .
+   54 call: ID . '(' call_args ')'
+
+    '('  shift, and go to state 44
+
+    $default  reduce using rule 49 (exp)
+
+
+State 49
+
+   28 return: RETURN ';' .
+
+    $default  reduce using rule 28 (return)
+
+
+State 50
+
+   27 return: RETURN exp . ';'
+   45 exp: exp . ADDOP exp
+   46    | exp . MULOP exp
+
+    ADDOP  shift, and go to state 64
+    MULOP  shift, and go to state 65
+    ';'    shift, and go to state 74
+
+
+State 51
+
+   29 write: WRITE '(' . exp ')' ';'
+   30      | WRITE '(' . STR ')' ';'
+
+    ID          shift, and go to state 48
+    INTEGERNUM  shift, and go to state 16
+    REALNUM     shift, and go to state 17
+    STR         shift, and go to state 75
+    '('         shift, and go to state 25
+
+    exp   go to state 76
+    num   go to state 38
+    call  go to state 39
+
+
+State 52
+
+   31 read: READ '(' . lval ')' ';'
+
+    ID  shift, and go to state 77
+
+    lval  go to state 78
+
+
+State 53
+
+   41 bexp: NOT . bexp
+
+    ID          shift, and go to state 48
+    INTEGERNUM  shift, and go to state 16
+    REALNUM     shift, and go to state 17
+    FULL_WHILE  shift, and go to state 22
+    NOT         shift, and go to state 53
+    '('         shift, and go to state 54
+
+    fullwhile  go to state 55
+    bexp       go to state 79
+    exp        go to state 57
+    num        go to state 38
+    call       go to state 39
+
+
+State 54
+
+   43 bexp: '(' . bexp ')'
+   47 exp: '(' . exp ')'
+   48    | '(' . type ')' exp
+
+    ID          shift, and go to state 48
+    INT         shift, and go to state 4
+    FLOAT       shift, and go to state 5
+    VOID        shift, and go to state 6
+    INTEGERNUM  shift, and go to state 16
+    REALNUM     shift, and go to state 17
+    FULL_WHILE  shift, and go to state 22
+    NOT         shift, and go to state 53
+    '('         shift, and go to state 54
+
+    type       go to state 60
+    fullwhile  go to state 55
+    bexp       go to state 80
+    exp        go to state 81
+    num        go to state 38
+    call       go to state 39
+
+
+State 55
+
+   44 bexp: fullwhile .
+
+    $default  reduce using rule 44 (bexp)
+
+
+State 56
+
+   34 fullwhile: FULL_WHILE bexp . DO stmt
+   39 bexp: bexp . OR bexp
+   40     | bexp . AND bexp
+
+    DO   shift, and go to state 82
+    OR   shift, and go to state 83
+    AND  shift, and go to state 84
+
+
+State 57
+
+   42 bexp: exp . RELOP exp
+   45 exp: exp . ADDOP exp
+   46    | exp . MULOP exp
+
+    RELOP  shift, and go to state 85
+    ADDOP  shift, and go to state 64
+    MULOP  shift, and go to state 65
+
+
+State 58
+
+   37 cntrl: WHILE bexp . DO stmt
+   39 bexp: bexp . OR bexp
+   40     | bexp . AND bexp
+
+    DO   shift, and go to state 86
+    OR   shift, and go to state 83
+    AND  shift, and go to state 84
+
+
+State 59
+
+   35 cntrl: IF bexp . THEN stmt ELSE stmt
+   36      | IF bexp . THEN stmt
+   39 bexp: bexp . OR bexp
+   40     | bexp . AND bexp
+
+    THEN  shift, and go to state 87
+    OR    shift, and go to state 83
+    AND   shift, and go to state 84
+
+
+State 60
+
+   48 exp: '(' type . ')' exp
+
+    ')'  shift, and go to state 88
+
+
+State 61
+
+   45 exp: exp . ADDOP exp
+   46    | exp . MULOP exp
+   47    | '(' exp . ')'
+
+    ADDOP  shift, and go to state 64
+    MULOP  shift, and go to state 65
+    ')'    shift, and go to state 89
+
+
+State 62
+
+   18 stmt: dcl ';' .
+
+    $default  reduce using rule 18 (stmt)
+
+
+State 63
+
+   32 assn: lval ASSIGN . exp ';'
+
+    ID          shift, and go to state 48
+    INTEGERNUM  shift, and go to state 16
+    REALNUM     shift, and go to state 17
+    '('         shift, and go to state 25
+
+    exp   go to state 90
+    num   go to state 38
+    call  go to state 39
+
+
+State 64
+
+   45 exp: exp ADDOP . exp
+
+    ID          shift, and go to state 48
+    INTEGERNUM  shift, and go to state 16
+    REALNUM     shift, and go to state 17
+    '('         shift, and go to state 25
+
+    exp   go to state 91
+    num   go to state 38
+    call  go to state 39
+
+
+State 65
+
+   46 exp: exp MULOP . exp
+
+    ID          shift, and go to state 48
+    INTEGERNUM  shift, and go to state 16
+    REALNUM     shift, and go to state 17
+    '('         shift, and go to state 25
+
+    exp   go to state 92
+    num   go to state 38
+    call  go to state 39
+
+
+State 66
+
+   20 stmt: exp ';' .
+
+    $default  reduce using rule 20 (stmt)
+
+
+State 67
+
+    5 func_api: type ID '(' func_args ')' .
+
+    $default  reduce using rule 5 (func_api)
+
+
+State 68
+
+    8 func_arglist: func_arglist ',' . dcl
+
+    ID  shift, and go to state 40
+
+    dcl  go to state 93
+
+
+State 69
+
+   45 exp: exp . ADDOP exp
+   46    | exp . MULOP exp
+   58 call_arglist: exp .
+
+    ADDOP  shift, and go to state 64
+    MULOP  shift, and go to state 65
+
+    $default  reduce using rule 58 (call_arglist)
+
+
+State 70
+
+   54 call: ID '(' call_args . ')'
+
+    ')'  shift, and go to state 94
+
+
+State 71
+
+   55 call_args: call_arglist .
+   57 call_arglist: call_arglist . ',' exp
+
+    ','  shift, and go to state 95
+
+    $default  reduce using rule 55 (call_args)
+
+
+State 72
+
+   12 dcl: ID ',' dcl .
+
+    $default  reduce using rule 12 (dcl)
+
+
+State 73
+
+   11 dcl: ID ':' type .
+
+    $default  reduce using rule 11 (dcl)
+
+
+State 74
+
+   27 return: RETURN exp ';' .
+
+    $default  reduce using rule 27 (return)
+
+
+State 75
+
+   30 write: WRITE '(' STR . ')' ';'
+
+    ')'  shift, and go to state 96
+
+
+State 76
+
+   29 write: WRITE '(' exp . ')' ';'
+   45 exp: exp . ADDOP exp
+   46    | exp . MULOP exp
+
+    ADDOP  shift, and go to state 64
+    MULOP  shift, and go to state 65
+    ')'    shift, and go to state 97
+
+
+State 77
+
+   33 lval: ID .
+
+    $default  reduce using rule 33 (lval)
+
+
+State 78
+
+   31 read: READ '(' lval . ')' ';'
+
+    ')'  shift, and go to state 98
+
+
+State 79
+
+   39 bexp: bexp . OR bexp
+   40     | bexp . AND bexp
+   41     | NOT bexp .
+
+    OR   shift, and go to state 83
+    AND  shift, and go to state 84
+
+    $default  reduce using rule 41 (bexp)
+
+
+State 80
+
+   39 bexp: bexp . OR bexp
+   40     | bexp . AND bexp
+   43     | '(' bexp . ')'
+
+    OR   shift, and go to state 83
+    AND  shift, and go to state 84
+    ')'  shift, and go to state 99
+
+
+State 81
+
+   42 bexp: exp . RELOP exp
+   45 exp: exp . ADDOP exp
+   46    | exp . MULOP exp
+   47    | '(' exp . ')'
+
+    RELOP  shift, and go to state 85
+    ADDOP  shift, and go to state 64
+    MULOP  shift, and go to state 65
+    ')'    shift, and go to state 89
+
+
+State 82
+
+   34 fullwhile: FULL_WHILE bexp DO . stmt
+
+    ID          shift, and go to state 15
+    INTEGERNUM  shift, and go to state 16
+    REALNUM     shift, and go to state 17
+    BREAK       shift, and go to state 18
+    RETURN      shift, and go to state 19
+    WRITE       shift, and go to state 20
+    READ        shift, and go to state 21
+    FULL_WHILE  shift, and go to state 22
+    WHILE       shift, and go to state 23
+    IF          shift, and go to state 24
+    '('         shift, and go to state 25
+    '{'         shift, and go to state 10
+
+    blk        go to state 27
+    dcl        go to state 28
+    stmt       go to state 100
+    return     go to state 30
+    write      go to state 31
+    read       go to state 32
+    assn       go to state 33
+    lval       go to state 34
+    fullwhile  go to state 35
+    cntrl      go to state 36
+    exp        go to state 37
+    num        go to state 38
+    call       go to state 39
+
+
+State 83
+
+   39 bexp: bexp OR . bexp
+
+    ID          shift, and go to state 48
+    INTEGERNUM  shift, and go to state 16
+    REALNUM     shift, and go to state 17
+    FULL_WHILE  shift, and go to state 22
+    NOT         shift, and go to state 53
+    '('         shift, and go to state 54
+
+    fullwhile  go to state 55
+    bexp       go to state 101
+    exp        go to state 57
+    num        go to state 38
+    call       go to state 39
+
+
+State 84
+
+   40 bexp: bexp AND . bexp
+
+    ID          shift, and go to state 48
+    INTEGERNUM  shift, and go to state 16
+    REALNUM     shift, and go to state 17
+    FULL_WHILE  shift, and go to state 22
+    NOT         shift, and go to state 53
+    '('         shift, and go to state 54
+
+    fullwhile  go to state 55
+    bexp       go to state 102
+    exp        go to state 57
+    num        go to state 38
+    call       go to state 39
+
+
+State 85
+
+   42 bexp: exp RELOP . exp
+
+    ID          shift, and go to state 48
+    INTEGERNUM  shift, and go to state 16
+    REALNUM     shift, and go to state 17
+    '('         shift, and go to state 25
+
+    exp   go to state 103
+    num   go to state 38
+    call  go to state 39
+
+
+State 86
+
+   37 cntrl: WHILE bexp DO . stmt
+
+    ID          shift, and go to state 15
+    INTEGERNUM  shift, and go to state 16
+    REALNUM     shift, and go to state 17
+    BREAK       shift, and go to state 18
+    RETURN      shift, and go to state 19
+    WRITE       shift, and go to state 20
+    READ        shift, and go to state 21
+    FULL_WHILE  shift, and go to state 22
+    WHILE       shift, and go to state 23
+    IF          shift, and go to state 24
+    '('         shift, and go to state 25
+    '{'         shift, and go to state 10
+
+    blk        go to state 27
+    dcl        go to state 28
+    stmt       go to state 104
+    return     go to state 30
+    write      go to state 31
+    read       go to state 32
+    assn       go to state 33
+    lval       go to state 34
+    fullwhile  go to state 35
+    cntrl      go to state 36
+    exp        go to state 37
+    num        go to state 38
+    call       go to state 39
+
+
+State 87
+
+   35 cntrl: IF bexp THEN . stmt ELSE stmt
+   36      | IF bexp THEN . stmt
+
+    ID          shift, and go to state 15
+    INTEGERNUM  shift, and go to state 16
+    REALNUM     shift, and go to state 17
+    BREAK       shift, and go to state 18
+    RETURN      shift, and go to state 19
+    WRITE       shift, and go to state 20
+    READ        shift, and go to state 21
+    FULL_WHILE  shift, and go to state 22
+    WHILE       shift, and go to state 23
+    IF          shift, and go to state 24
+    '('         shift, and go to state 25
+    '{'         shift, and go to state 10
+
+    blk        go to state 27
+    dcl        go to state 28
+    stmt       go to state 105
+    return     go to state 30
+    write      go to state 31
+    read       go to state 32
+    assn       go to state 33
+    lval       go to state 34
+    fullwhile  go to state 35
+    cntrl      go to state 36
+    exp        go to state 37
+    num        go to state 38
+    call       go to state 39
+
+
+State 88
+
+   48 exp: '(' type ')' . exp
+
+    ID          shift, and go to state 48
+    INTEGERNUM  shift, and go to state 16
+    REALNUM     shift, and go to state 17
+    '('         shift, and go to state 25
+
+    exp   go to state 106
+    num   go to state 38
+    call  go to state 39
+
+
+State 89
+
+   47 exp: '(' exp ')' .
+
+    $default  reduce using rule 47 (exp)
+
+
+State 90
+
+   32 assn: lval ASSIGN exp . ';'
+   45 exp: exp . ADDOP exp
+   46    | exp . MULOP exp
+
+    ADDOP  shift, and go to state 64
+    MULOP  shift, and go to state 65
+    ';'    shift, and go to state 107
+
+
+State 91
+
+   45 exp: exp . ADDOP exp
+   45    | exp ADDOP exp .
+   46    | exp . MULOP exp
+
+    MULOP  shift, and go to state 65
+
+    $default  reduce using rule 45 (exp)
+
+
+State 92
+
+   45 exp: exp . ADDOP exp
+   46    | exp . MULOP exp
+   46    | exp MULOP exp .
+
+    $default  reduce using rule 46 (exp)
+
+
+State 93
+
+    8 func_arglist: func_arglist ',' dcl .
+
+    $default  reduce using rule 8 (func_arglist)
+
+
+State 94
+
+   54 call: ID '(' call_args ')' .
+
+    $default  reduce using rule 54 (call)
+
+
+State 95
+
+   57 call_arglist: call_arglist ',' . exp
+
+    ID          shift, and go to state 48
+    INTEGERNUM  shift, and go to state 16
+    REALNUM     shift, and go to state 17
+    '('         shift, and go to state 25
+
+    exp   go to state 108
+    num   go to state 38
+    call  go to state 39
+
+
+State 96
+
+   30 write: WRITE '(' STR ')' . ';'
+
+    ';'  shift, and go to state 109
+
+
+State 97
+
+   29 write: WRITE '(' exp ')' . ';'
+
+    ';'  shift, and go to state 110
+
+
+State 98
+
+   31 read: READ '(' lval ')' . ';'
+
+    ';'  shift, and go to state 111
+
+
+State 99
+
+   43 bexp: '(' bexp ')' .
+
+    $default  reduce using rule 43 (bexp)
+
+
+State 100
+
+   34 fullwhile: FULL_WHILE bexp DO stmt .
+
+    $default  reduce using rule 34 (fullwhile)
+
+
+State 101
+
+   39 bexp: bexp . OR bexp
+   39     | bexp OR bexp .
+   40     | bexp . AND bexp
+
+    AND  shift, and go to state 84
+
+    $default  reduce using rule 39 (bexp)
+
+
+State 102
+
+   39 bexp: bexp . OR bexp
+   40     | bexp . AND bexp
+   40     | bexp AND bexp .
+
+    $default  reduce using rule 40 (bexp)
+
+
+State 103
+
+   42 bexp: exp RELOP exp .
+   45 exp: exp . ADDOP exp
+   46    | exp . MULOP exp
+
+    ADDOP  shift, and go to state 64
+    MULOP  shift, and go to state 65
+
+    $default  reduce using rule 42 (bexp)
+
+
+State 104
+
+   37 cntrl: WHILE bexp DO stmt .
+
+    $default  reduce using rule 37 (cntrl)
+
+
+State 105
+
+   35 cntrl: IF bexp THEN stmt . ELSE stmt
+   36      | IF bexp THEN stmt .
+
+    ELSE  shift, and go to state 112
+
+    $default  reduce using rule 36 (cntrl)
+
+
+State 106
+
+   45 exp: exp . ADDOP exp
+   46    | exp . MULOP exp
+   48    | '(' type ')' exp .
+
+    $default  reduce using rule 48 (exp)
+
+
+State 107
+
+   32 assn: lval ASSIGN exp ';' .
+
+    $default  reduce using rule 32 (assn)
+
+
+State 108
+
+   45 exp: exp . ADDOP exp
+   46    | exp . MULOP exp
+   57 call_arglist: call_arglist ',' exp .
+
+    ADDOP  shift, and go to state 64
+    MULOP  shift, and go to state 65
+
+    $default  reduce using rule 57 (call_arglist)
+
+
+State 109
+
+   30 write: WRITE '(' STR ')' ';' .
+
+    $default  reduce using rule 30 (write)
+
+
+State 110
+
+   29 write: WRITE '(' exp ')' ';' .
+
+    $default  reduce using rule 29 (write)
+
+
+State 111
+
+   31 read: READ '(' lval ')' ';' .
+
+    $default  reduce using rule 31 (read)
+
+
+State 112
+
+   35 cntrl: IF bexp THEN stmt ELSE . stmt
+
+    ID          shift, and go to state 15
+    INTEGERNUM  shift, and go to state 16
+    REALNUM     shift, and go to state 17
+    BREAK       shift, and go to state 18
+    RETURN      shift, and go to state 19
+    WRITE       shift, and go to state 20
+    READ        shift, and go to state 21
+    FULL_WHILE  shift, and go to state 22
+    WHILE       shift, and go to state 23
+    IF          shift, and go to state 24
+    '('         shift, and go to state 25
+    '{'         shift, and go to state 10
+
+    blk        go to state 27
+    dcl        go to state 28
+    stmt       go to state 113
+    return     go to state 30
+    write      go to state 31
+    read       go to state 32
+    assn       go to state 33
+    lval       go to state 34
+    fullwhile  go to state 35
+    cntrl      go to state 36
+    exp        go to state 37
+    num        go to state 38
+    call       go to state 39
+
+
+State 113
+
+   35 cntrl: IF bexp THEN stmt ELSE stmt .
+
+    $default  reduce using rule 35 (cntrl)
