@@ -1,17 +1,12 @@
 %{
-	#include <iostream>
-	#include <map>
-	#include <string>
-	#include "t7.hpp"
 	#include "part2_helpers.h"
-	using namespace std;
 	
-	void yyerrOR(const char* c);
+	void yyerror(const char* c);
 	extern int yylineno;
 	extern char* yytext;
 	extern int yylex();
+	ParserNode *parseTree;
 
-	map<string, int> vars;
 }%
 	
 	%token ID
@@ -26,6 +21,7 @@
 	%token STR
 	%token READ
 	%token FULL_WHILE
+	%token WHILE
 	%token DO
 	%token IF
 	%token THEN
@@ -45,7 +41,7 @@
 	%left '}'
 	%left ':'
 
-	
+
 %%
 	program		: fdefs
 					{
@@ -66,7 +62,7 @@
 					}
 					|/*EPSILON*/
 					{
-						*makeNode eps = makeNode("EPSILON", NULL, NULL) 
+						ParserNode* eps = makeNode("EPSILON", NULL, NULL);
 						$$ = makeNode("fdefs", NULL, eps);
 					};
 	func_api	: type ID '(' func_args ')'
@@ -83,7 +79,7 @@
 					}
 					|/*EPSILON*/
 					{
-						*makeNode eps = makeNode("EPSILON", NULL, NULL);
+						ParserNode* eps = makeNode("EPSILON", NULL, NULL);
 						$$ = makeNode("func_api", NULL, eps);
 					};
 	func_arglist: func_arglist ',' dcl
@@ -132,7 +128,7 @@
 					}
 					|/*EPSILON*/
 					{
-						*makeNode eps = makeNode("EPSILON", NULL, NULL);
+						ParserNode* eps = makeNode("EPSILON", NULL, NULL);
 						$$ = makeNode("func_api", NULL, eps);
 					};
 	stmt		: dcl ';'
@@ -345,7 +341,7 @@
 					}
 					|/*EPSILON*/
 					{
-						*makeNode eps = makeNode("EPSILON", NULL, NULL);
+						ParserNode* eps = makeNode("EPSILON", NULL, NULL);
 						$$ = makeNode("call_args", NULL, eps);
 					};
 	call_arglist: call_arglist ',' exp
