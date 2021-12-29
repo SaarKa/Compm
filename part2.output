@@ -112,8 +112,8 @@ DO (271) 34 37
 IF (272) 35 36
 THEN (273) 35 36
 ELSE (274) 35
-ASSIGN (275) 32
-NOT (276) 41
+NOT (275) 41
+ASSIGN (276) 32
 OR (277) 39
 AND (278) 40
 RELOP (279) 42
@@ -338,8 +338,8 @@ State 15
    49 exp: ID .
    54 call: ID . '(' call_args ')'
 
-    '('  shift, and go to state 44
-    ','  shift, and go to state 45
+    ','  shift, and go to state 44
+    '('  shift, and go to state 45
     ':'  shift, and go to state 46
 
     ASSIGN    reduce using rule 33 (lval)
@@ -579,7 +579,7 @@ State 40
    11 dcl: ID . ':' type
    12    | ID . ',' dcl
 
-    ','  shift, and go to state 45
+    ','  shift, and go to state 44
     ':'  shift, and go to state 46
 
 
@@ -609,6 +609,15 @@ State 43
 
 State 44
 
+   12 dcl: ID ',' . dcl
+
+    ID  shift, and go to state 40
+
+    dcl  go to state 69
+
+
+State 45
+
    54 call: ID '(' . call_args ')'
 
     ID          shift, and go to state 48
@@ -618,20 +627,11 @@ State 44
 
     $default  reduce using rule 56 (call_args)
 
-    exp           go to state 69
+    exp           go to state 70
     num           go to state 38
     call          go to state 39
-    call_args     go to state 70
-    call_arglist  go to state 71
-
-
-State 45
-
-   12 dcl: ID ',' . dcl
-
-    ID  shift, and go to state 40
-
-    dcl  go to state 72
+    call_args     go to state 71
+    call_arglist  go to state 72
 
 
 State 46
@@ -657,7 +657,7 @@ State 48
    49 exp: ID .
    54 call: ID . '(' call_args ')'
 
-    '('  shift, and go to state 44
+    '('  shift, and go to state 45
 
     $default  reduce using rule 49 (exp)
 
@@ -891,6 +891,13 @@ State 68
 
 State 69
 
+   12 dcl: ID ',' dcl .
+
+    $default  reduce using rule 12 (dcl)
+
+
+State 70
+
    45 exp: exp . ADDOP exp
    46    | exp . MULOP exp
    58 call_arglist: exp .
@@ -901,14 +908,14 @@ State 69
     $default  reduce using rule 58 (call_arglist)
 
 
-State 70
+State 71
 
    54 call: ID '(' call_args . ')'
 
     ')'  shift, and go to state 94
 
 
-State 71
+State 72
 
    55 call_args: call_arglist .
    57 call_arglist: call_arglist . ',' exp
@@ -916,13 +923,6 @@ State 71
     ','  shift, and go to state 95
 
     $default  reduce using rule 55 (call_args)
-
-
-State 72
-
-   12 dcl: ID ',' dcl .
-
-    $default  reduce using rule 12 (dcl)
 
 
 State 73

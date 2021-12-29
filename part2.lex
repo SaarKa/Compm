@@ -9,7 +9,7 @@
 %option noyywrap
 
 digit			[0-9]
-id				[a-zA-Z](\d|[a-zA-Z]|_)*
+id				[a-zA-Z]({digit}|[a-zA-Z]|_)*
 integernum		{digit}+(\.0+)?
 realnum			{digit}+\.[1-9]{digit}
 str				\"(([^"\n\\])|(\\[nt"]))*\"
@@ -96,7 +96,10 @@ break			{
 				return REALNUM;
 				}
 {str}			{
-				yylval = makeNode("str", yytext, NULL);
+				char* s = yytext;
+				s[yyleng-1]=0;
+				s++;
+				yylval = makeNode("str", s, NULL);
 				return STR;
 				}
 {relop}			{
@@ -131,9 +134,8 @@ break			{
 {newline}		{}
 {comment}		{}
 .				{
-				printf("\nLexical error: '%s' in line number %d\n", yytext, yylineno);
+				printf("Lexical error: '%s' in line number %d\n", yytext, yylineno);
 				exit(1);
 				}
 %%
 
-//yylval in the lex is like $$ $1 in the parser. both of type YYSTYPE need to define of type parserNode*
