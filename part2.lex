@@ -8,19 +8,20 @@
 %option yylineno
 %option noyywrap
 
+
 digit			[0-9]
-id				[a-zA-Z]({digit}|[a-zA-Z]|_)*
-integernum		{digit}+(\.0+)?
-realnum			{digit}+\.[1-9]{digit}
-str				\"(([^"\n\\])|(\\[nt"]))*\"
-symbol			[(){},;:]
+id			[a-zA-Z]({digit}|[a-zA-Z]|_)*
+integernum		{digit}+
+realnum			{digit}+\.{digit}+
+str			\"(([^"\n\r\\])|(\\[\"nt]))*\"
+symbol			[(){},;:\.]
 relop			==|<>|<|<=|>|>=
 addop			\+|\-
-mulop			\*|\/
+mulop			\*|\/ 
 assign			=
-and				&&
-or				\|\|
-not				!
+and			&&
+or			\|\|
+not			!
 comment			#[^\n\r]*
 whitespaces		[\t ]
 newline			[\n\r]
